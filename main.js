@@ -1,3 +1,10 @@
+var affirmRadio = document.querySelector('input[value="affirmation"]');
+var mantraRadio = document.querySelector('input[value="mantra"]');
+var messageButton = document.querySelector('button');
+var image = document.querySelector('img');
+var output = document.querySelector('section p');
+
+
 var mantras = [
   `Breathing in, I send myself love. Breathing out, I send love to someone else who needs it.`,
   `Don’t let yesterday take up too much of today.`,
@@ -31,3 +38,24 @@ var affirmations = [
   `I honor my body by trusting the signals that it sends me.`,
   `I manifest perfect health by making smart choices.`,
 ]
+
+messageButton.addEventListener('click', function(e) {
+  e.preventDefault();
+  showMessage();
+});
+
+function showMessage() {
+  image.classList.add("hidden");
+  output.classList.remove("hidden");
+  if (mantraRadio.checked) {
+    output.innerHTML = getRandomIndex(mantras);
+  } else if (affirmRadio.checked) {
+    output.innerHTML = getRandomIndex(affirmations);
+  } else {
+    output.innerHTML = "Please choose an option to display your care message!";
+  }
+}
+
+function getRandomIndex(array) {
+  return array[Math.floor(Math.random()*array.length)];
+}
