@@ -4,6 +4,11 @@ var messageButton = document.querySelector('button');
 var image = document.querySelector('img');
 var output = document.querySelector('section p');
 
+var mantraStorage = [];
+var affirmationStorage = [];
+
+var storingAffirmation = true;
+var storingMantra = true;
 
 var mantras = [
   `Breathing in, I send myself love. Breathing out, I send love to someone else who needs it.`,
@@ -47,15 +52,40 @@ messageButton.addEventListener('click', function(e) {
 function showMessage() {
   image.classList.add("hidden");
   output.classList.remove("hidden");
-  if (mantraRadio.checked) {
-    output.innerHTML = getRandomIndex(mantras);
-  } else if (affirmRadio.checked) {
-    output.innerHTML = getRandomIndex(affirmations);
+  if (mantraRadio.checked && storingMantra) {
+    messageCycle(mantras, mantraStorage);
+  } else if (affirmRadio.checked && storingAffirmation) {
+    messageCycle(affirmations, affirmationStorage);
+  } else if (mantraRadio.checked && !storingMantra) {
+    messageCycle(mantraStorage, mantras);
+  } else if (affirmRadio.checked && !storingAffirmation) {
+    messageCycle(affirmationStorage, affirmations);
   } else {
     output.innerHTML = "Please choose an option to display your care message!";
   }
 }
 
 function getRandomIndex(array) {
-  return array[Math.floor(Math.random()*array.length)];
+  return Math.floor(Math.random()*array.length);
+}
+
+function switchDirection(array) {
+  if (array === mantras || array === mantraStorage) {
+    storingMantra = !storingMantra;
+  }
+  if (array === affirmations || array === affirmationStorage) {
+    storingAffirmation = !storingAffirmation;
+  }
+  console.log("You'll start seeing repeated messages");
+}
+
+function messageCycle(inputArray, storageArray) {
+  var input = inputArray.splice(getRandomIndex(inputArray), 1).toString();
+  if (!inputArray.length) {
+    switchDirection(inputArray);
+  }
+  output.innerHTML = input;
+
+  storageArray.push(input);
+
 }
