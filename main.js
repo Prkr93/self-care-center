@@ -76,16 +76,14 @@ function switchDirection(array) {
   if (array === affirmations || array === affirmationStorage) {
     storingAffirmation = !storingAffirmation;
   }
-  console.log("You'll start seeing repeated messages");
+  output.innerHTML += `<br><br>You'll now start seeing repeated messages!`
 }
 
 function messageCycle(inputArray, storageArray) {
   var input = inputArray.splice(getRandomIndex(inputArray), 1).toString();
+  output.innerHTML = input;
+  storageArray.push(input);
   if (!inputArray.length) {
     switchDirection(inputArray);
   }
-  output.innerHTML = input;
-
-  storageArray.push(input);
-
 }
